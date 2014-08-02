@@ -25,6 +25,7 @@ E* is a language that seeks to solve the following problems in event programming
 
 - auditing, who changed what.
 - avoid excessive weaving and keep a maintenable scope.
+- centralize business logic in a clean format.
 
 #Terms#
 
@@ -40,4 +41,23 @@ E* is a language that seeks to solve the following problems in event programming
 
 *variable space*: This is a set of (variable definition , type and value) tuples and/or other guarded variable spaces. A variable space MUST NOT include itself. If a variable space includes the same variable multiple times, the most permissive modifier is used.  
 
+#An example#
+Let's make a small website that records promises of people. 
+
+People swear by using their name and promise something. 
+
+
+- A User can swear an oath, this is stored in the database.  
+- Users can always see the oaths.
+- A User is sent an email if the deadline of the oath is reached.
+- A validator can confirm that the oath has been forefilled. This marks the oath as completed.
+- An oath is removed after it was marked as completed after a week. 
+
+Please note that these specification are structured as 'when something happens' then 'something else should occur'.
+
+**event** (a user swears an oath) **is** requestSpace.isPost and requestSpace.oath not empty **uses** *read* requestSpace**;**
+
+**evaluate** (a user swears an oath) **onRequest** **;**
+
+**on**  (a user swears an oath) **trigger** storeOath;
 #How #
