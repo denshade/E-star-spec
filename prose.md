@@ -57,7 +57,25 @@ Please note that these specification are structured as 'when something happens' 
 
 **event** (a user swears an oath) **is** requestSpace.isPost and requestSpace.oath not empty **uses** *read* requestSpace**;**
 
-**evaluate** (a user swears an oath) **onRequest** **;**
 
 **on**  (a user swears an oath) **trigger** storeOath;
+
+
+The bnf syntax is:
+
+    <program> ::= <eventDefinitionList> <triggerDefinitionList>
+	<eventDefinitionList> ::= <eventDefinition> | <eventDefinition> <eventDefinitionList>
+	<eventDefinition> ::= "event(" <conditional> ")" "uses" <guarded variablespace list> ";"
+	<triggerDefinitionList> ::= <triggerDefinition> <triggerDefinitionList>  
+	<conditional> ::= Currently this is language specific.
+	<guarded variablespace list> ::= <guarded variablespace> | <guarded  variablespace><guarded variablespace list>
+
+	<guarded variablespace> ::= TBD
+	
+
+
+> Can I trigger an event myself other than triggering the condition? 
+
+No. This is a explicit decision. Events can only be triggered **iff** the trigger condition has been met. Otherwise it is very hard to understand why an event has triggered.
+
 #How #
