@@ -55,10 +55,10 @@ People swear by using their name and promise something.
 
 Please note that these specification are structured as 'when something happens' then 'something else should occur'.
 
-**event** (a user swears an oath) **is** requestSpace.isPost and requestSpace.oath not empty **uses** *read* requestSpace**;**
+> 
+**event** (a user swears an oath) **is** requestSpace.isPost and requestSpace.oath not empty **uses**  requestSpace readonly**;**
 
-
-**on**  (a user swears an oath) **trigger** storeOath;
+> **on**  (a user swears an oath) **trigger** storeOath uses requestSpace readonly;
 
 
 The bnf syntax is:
@@ -79,3 +79,30 @@ The bnf syntax is:
 No. This is a explicit decision. Events can only be triggered **iff** the trigger condition has been met. Otherwise it is very hard to understand why an event has triggered.
 
 #How #
+# A few interesting questions #
+If an event translates as a boolean function out of the Universe of data. 
+And an EventHandler just goes over the list of handlers.
+Should it then: 
+- Execute the procedures P : U -> U in parallel?
+- If executed serially there is the problem that the event may no longer be true. 
+
+An example is a list that is empty. If there are two procedures P1 and P2 that are triggered in serial then the following situation may occur:
+P1 changes the universe, it adds elements to the list. 
+P2 assumes however that it is triggered because of an empty list. This means that P2 may have strange effects.
+
+So it means that in this event handler P2 may or may not be triggered while the list is empty.
+
+****This means that the event is merely an indication that something was once true.**** 
+
+*Static eventHandler vs dynamic event handler.*
+While having a dynamic eventHandler in which you can dynamically create new eventHandlers on the fly is nice, I believe static eventhandlers are more clean, straight forward and debuggable.
+
+Dynamic event handlers are usually short term and have limited intelligence. An event handler that handles very slow events can wait for a quiet moment and process when everything is free.
+
+#Interesting sources#
+
+http://martinfowler.com/eaaDev/EventCollaboration.html
+http://martinfowler.com/eaaDev/EventNarrative.html
+http://martinfowler.com/eaaDev/EventSourcing.html
+
+http://vs.inf.ethz.ch/publ/papers/kasten-beyond-2005.pdf
